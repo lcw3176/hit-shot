@@ -6,15 +6,13 @@
     <meta content="https://hit.kmapshot.com" property="og:url"/>
     <meta content="HitShot" property="og:title"/>
     <meta content="Hit it with a shot on your site" property="og:description"/>
-    <!--    <meta content="https://mapshot.netlify.app/logo.jpg?raw=true" property="og:image"/>-->
+    <meta content="https://mapshot.netlify.app/logo.jpg?raw=true" property="og:image"/>
     <meta content="Hit it with a shot on your site" name="description">
     <meta content="ChanWoo-Lee" name="author">
-    <link href="https://mapshot.netlify.app" rel="canonical">
+    <link href="https://avatars.githubusercontent.com/u/59993347?v=4" rel="canonical">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>HitShot</title>
     <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet">
-    <!--    <link crossorigin="anonymous" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"-->
-    <!--          integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" rel="stylesheet"/>-->
 
 </head>
 
@@ -31,24 +29,6 @@
             <a class="navbar-item" href="https://hit.kmapshot.com/home">
                 <p class="title is-4 ml-5">HIT-SHOT</p>
             </a>
-
-            <div class="navbar-end mr-5">
-                <!--        <a class="navbar-item" href="../manual/index.html">-->
-                <!--            사용법-->
-                <!--        </a>-->
-
-                <!--        <a class="navbar-item" href="../log/index.html">-->
-                <!--            패치내역-->
-                <!--        </a>-->
-
-                <!--        <a class="navbar-item" href="../contact/index.html">-->
-                <!--            문의-->
-                <!--        </a>-->
-
-                <!--        <a class="navbar-item" href="../opensource/index.html">-->
-                <!--            오픈소스-->
-                <!--        </a>-->
-            </div>
 
         </div>
 
@@ -126,10 +106,10 @@
 
     function loadBadge() {
         let url = document.getElementById("siteUrl").value;
-        let imageUrl = "http://localhost:8080/api/badge/svg?url=" + url;
+        let imageUrl = "https://hit.kmapshot.com/api/badge/svg?url=" + url;
         document.getElementById("siteBadge").src = imageUrl;
 
-        document.getElementById("codeBlock").innerText = "<a href='http://localhost:8080'>" +
+        document.getElementById("codeBlock").innerText = "<a href='https://hit.kmapshot.com'>" +
             "<img src=" + imageUrl + "> " +
             "</a>"
     }
