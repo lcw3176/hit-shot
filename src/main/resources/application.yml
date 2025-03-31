@@ -4,3 +4,18 @@ spring:
       uri: ${mongoUri}
   application:
     name: hit-shot
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    cache: false
+    encoding: UTF-8
+    check-template-location: true
+
+  web:
+    resources:
+      add-mappings: false
+
+bucket:
+  token-count: 1000

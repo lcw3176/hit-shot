@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- console -->
+    <property name="console.format"
+              value="trace_id=%mdc{trace_id} span_id=%mdc{span_id} trace_flags=%mdc{trace_flags} %date [%thread] %-5level %logger : %msg%n"/>
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${console.format}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- file -->
+    <property name="file.format"
+              value="trace_id=%mdc{trace_id} span_id=%mdc{span_id} trace_flags=%mdc{trace_flags} %date [%thread] %-5level %logger : %msg%n"/>
+    <appender name="File" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./app.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>./app.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <maxFileSize>100MB</maxFileSize>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <append>true</append>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${file.format}%ex</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="Console"/>
+        <appender-ref ref="File"/>
+    </root>
+
+</configuration>
