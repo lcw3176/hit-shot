@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      uri: ${mongoUri}
+      uri: ${SPRING_DATA_MONGODB_URI}
   application:
     name: hit-shot
 
@@ -22,4 +22,4 @@ bucket:
 
 client:
   slack:
-    url: ${slackUrl}
+    url: ${CLIENT_SLACK_URL}
