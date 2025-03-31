@@ -1,9 +1,11 @@
 package com.api.hitshot.application;
 
 import com.api.hitshot.application.dto.UrlParts;
+import com.api.hitshot.domain.buckets.BucketCounter;
 import com.api.hitshot.domain.sites.SiteService;
 import com.api.hitshot.infra.exception.ApiException;
 import com.api.hitshot.infra.exception.status.ErrorCode;
+import io.github.bucket4j.Bucket;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -22,13 +24,20 @@ public class SiteUseCase {
     private static final String LOGO = "hit-shot";
 
     private final SiteService siteService;
+    private final BucketCounter bucketCounter;
 
     public long onlyGetVisitorsCount(String url) {
         return siteService.readVisitors(url);
     }
 
     public long increaseAndGetCount(String url) {
-        return siteService.addVisitors(url);
+        Bucket bucket = bucketCounter.getBucketForDomain(url);
+
+        if (bucket.tryConsume(1)) {
+            return siteService.addVisitors(url);
+        }
+
+        throw new ApiException(ErrorCode.RATE_LIMIT_ACTIVATED);
     }
 
     public String makeSvgLogo(long visitor, String color) {
@@ -43,7 +52,7 @@ public class SiteUseCase {
         int statusWidth = length * 10;
         int totalWidth = labelWidth + statusWidth;
 
-        String svg = String.format(
+        return String.format(
                 "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"%d\" height=\"20\" role=\"img\">" +
                         "<rect width=\"%d\" height=\"20\" fill=\"#555\" rx=\"3\"/>" +
                         "<rect x=\"%d\" width=\"%d\" height=\"20\" fill=\"%s\" rx=\"3\"/>" +
@@ -56,8 +65,6 @@ public class SiteUseCase {
                 labelWidth / 2, "hit-shot",
                 labelWidth + statusWidth / 2, numberFormat
         );
-
-        return svg;
     }
 
     public UrlParts filterUrlParts(String url) {
