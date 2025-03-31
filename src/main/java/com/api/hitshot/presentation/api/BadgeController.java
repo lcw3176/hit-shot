@@ -1,4 +1,4 @@
-package com.api.hitshot.presentation;
+package com.api.hitshot.presentation.api;
 
 import com.api.hitshot.application.SiteUseCase;
 import com.api.hitshot.application.dto.UrlParts;
@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/badge")
+@RequestMapping("/api/badge")
 @Validated
-public class badgeController {
+public class BadgeController {
 
     private final SiteUseCase siteUseCase;
 
-    
+
     @GetMapping("/svg")
     public ResponseEntity<String> getBadgeWithIncrement(@URL @RequestParam(value = "url") String url,
                                                         @RequestParam(defaultValue = "#4c1") String color) {

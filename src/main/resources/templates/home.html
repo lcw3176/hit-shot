@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta content="https://hit.kmapshot.com" property="og:url"/>
+    <meta content="HitShot" property="og:title"/>
+    <meta content="Hit it with a shot on your site" property="og:description"/>
+    <!--    <meta content="https://mapshot.netlify.app/logo.jpg?raw=true" property="og:image"/>-->
+    <meta content="Hit it with a shot on your site" name="description">
+    <meta content="ChanWoo-Lee" name="author">
+    <link href="https://mapshot.netlify.app" rel="canonical">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>HitShot</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet">
+    <!--    <link crossorigin="anonymous" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"-->
+    <!--          integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" rel="stylesheet"/>-->
+
+</head>
+
+<body>
+
+<div class="columns">
+    <div class="column is-2">
+
+    </div>
+
+    <div class="column">
+
+        <div class="navbar-brand">
+            <a class="navbar-item" href="https://hit.kmapshot.com/home">
+                <p class="title is-4 ml-5">HIT-SHOT</p>
+            </a>
+
+            <div class="navbar-end mr-5">
+                <!--        <a class="navbar-item" href="../manual/index.html">-->
+                <!--            사용법-->
+                <!--        </a>-->
+
+                <!--        <a class="navbar-item" href="../log/index.html">-->
+                <!--            패치내역-->
+                <!--        </a>-->
+
+                <!--        <a class="navbar-item" href="../contact/index.html">-->
+                <!--            문의-->
+                <!--        </a>-->
+
+                <!--        <a class="navbar-item" href="../opensource/index.html">-->
+                <!--            오픈소스-->
+                <!--        </a>-->
+            </div>
+
+        </div>
+
+
+        <div class="container is-fluid ma-5">
+            <section class="hero is-link">
+                <div class="hero-body">
+                    <p class="title">Hit it with a shot on your site!</p>
+                    <p class="subtitle">page counter</p>
+                </div>
+            </section>
+
+            <div class="box mt-5">
+                <div class="field">
+                    <label class="label">Site url</label>
+                    <div class="control">
+                        <input class="input" id="siteUrl"
+                               placeholder="enter or copy and paste your site // ex) https://kmapshot.com" type="text">
+                    </div>
+                </div>
+
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button class="button is-link" onclick="loadBadge()">Generate</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-5">
+                <header class="card-header">
+                    <p class="card-header-title">Created Badge</p>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <img id="siteBadge" src="">
+                    </div>
+
+                    <div class="content" id="codeBlock">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="column is-2">
+
+    </div>
+</div>
+
+<div class="container is-fluid adsBanner">
+    <div class="columns pr-5 pl-5">
+        <div class="column">
+
+        </div>
+
+        <div class="column">
+
+
+        </div>
+
+        <div class="column">
+
+
+        </div>
+
+    </div>
+
+</div>
+</body>
+
+<script>
+
+    function loadBadge() {
+        let url = document.getElementById("siteUrl").value;
+        let imageUrl = "http://localhost:8080/api/badge/svg?url=" + url;
+        document.getElementById("siteBadge").src = imageUrl;
+
+        document.getElementById("codeBlock").innerText = "<a href='http://localhost:8080'>" +
+            "<img src=" + imageUrl + "> " +
+            "</a>"
+    }
+</script>
+</html>
