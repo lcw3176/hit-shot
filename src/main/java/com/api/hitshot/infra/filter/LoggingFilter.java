@@ -22,27 +22,7 @@ import java.util.UUID;
 @Slf4j
 public class LoggingFilter extends OncePerRequestFilter {
 
-
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        MDC.put("traceId", UUID.randomUUID().toString());
-        if (isAsyncDispatch(request)) {
-            filterChain.doFilter(request, response);
-        } else {
-            doFilterWrapped(new RequestWrapper(request), new ResponseWrapper(response), filterChain);
-        }
-        MDC.clear();
-    }
-
-    protected void doFilterWrapped(RequestWrapper request, ContentCachingResponseWrapper response, FilterChain filterChain) throws ServletException, IOException {
-        try {
-            logRequest(request);
-            filterChain.doFilter(request, response);
-        } finally {
-            logResponse(response);
-            response.copyBodyToResponse();
-        }
-    }
+    private static final List<String> WHITE_LIST = List.of("/favicon.ico");
 
     private static void logRequest(RequestWrapper request) throws IOException {
         String queryString = request.getQueryString();
@@ -95,7 +75,6 @@ public class LoggingFilter extends OncePerRequestFilter {
         }
     }
 
-
     private static boolean isVisible(MediaType mediaType) {
         final List<MediaType> VISIBLE_TYPES = Arrays.asList(
                 MediaType.valueOf("text/*"),
@@ -109,5 +88,31 @@ public class LoggingFilter extends OncePerRequestFilter {
 
         return VISIBLE_TYPES.stream()
                 .anyMatch(visibleType -> visibleType.includes(mediaType));
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        MDC.put("traceId", UUID.randomUUID().toString());
+        if (isAsyncDispatch(request)) {
+            filterChain.doFilter(request, response);
+        } else {
+            doFilterWrapped(new RequestWrapper(request), new ResponseWrapper(response), filterChain);
+        }
+        MDC.clear();
+    }
+
+    protected void doFilterWrapped(RequestWrapper request, ContentCachingResponseWrapper response, FilterChain filterChain) throws ServletException, IOException {
+        try {
+            if (!WHITE_LIST.contains(request.getRequestURI())) {
+                logRequest(request);
+                filterChain.doFilter(request, response);
+            }
+
+        } finally {
+            if (!WHITE_LIST.contains(request.getRequestURI())) {
+                logResponse(response);
+                response.copyBodyToResponse();
+            }
+        }
     }
 }
