@@ -55,5 +55,5 @@ jobs:
         with:
           app-name: 'hit-shot'
           slot-name: 'Production'
-          package: '*.jar'
+          package: 'hit-shot.jar'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B1BAD9C616F949F98AE7D24D5F82E840 }}
