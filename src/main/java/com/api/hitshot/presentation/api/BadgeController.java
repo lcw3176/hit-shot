@@ -1,7 +1,6 @@
 package com.api.hitshot.presentation.api;
 
 import com.api.hitshot.application.SiteUseCase;
-import com.api.hitshot.application.dto.UrlParts;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.http.HttpHeaders;
@@ -25,8 +24,7 @@ public class BadgeController {
     public ResponseEntity<String> getBadgeWithIncrement(@URL @RequestParam(value = "url") String url,
                                                         @RequestParam(defaultValue = "#4c1") String color) {
 
-        UrlParts urlParts = siteUseCase.filterUrlParts(url);
-        String filteredUrl = urlParts.merge();
+        String filteredUrl = siteUseCase.urlValidation(url);
 
         long visitor = siteUseCase.increaseAndGetCount(filteredUrl);
         String logo = siteUseCase.makeSvgLogo(visitor, color);
@@ -40,10 +38,9 @@ public class BadgeController {
     @GetMapping("/hidden")
     public ResponseEntity<Void> increaseCountWithoutLogo(@URL @RequestParam(value = "url") String url) {
 
-        UrlParts urlParts = siteUseCase.filterUrlParts(url);
-        String filteredUrl = urlParts.merge();
+        String filteredUrl = siteUseCase.urlValidation(url);
 
-        siteUseCase.onlyGetVisitorsCount(filteredUrl);
+        siteUseCase.increaseAndGetCount(filteredUrl);
 
         return ResponseEntity.ok().build();
     }
@@ -53,8 +50,7 @@ public class BadgeController {
     public ResponseEntity<String> getBadgeWithoutIncrement(@URL @RequestParam(value = "url") String url,
                                                            @RequestParam(defaultValue = "#4c1") String color) {
 
-        UrlParts urlParts = siteUseCase.filterUrlParts(url);
-        String filteredUrl = urlParts.merge();
+        String filteredUrl = siteUseCase.urlValidation(url);
 
         long visitor = siteUseCase.onlyGetVisitorsCount(filteredUrl);
         String logo = siteUseCase.makeSvgLogo(visitor, color);

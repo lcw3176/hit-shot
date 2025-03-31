@@ -1,6 +1,5 @@
 package com.api.hitshot.application;
 
-import com.api.hitshot.application.dto.UrlParts;
 import com.api.hitshot.domain.buckets.BucketCounter;
 import com.api.hitshot.domain.sites.SiteService;
 import com.api.hitshot.infra.exception.ApiException;
@@ -67,15 +66,17 @@ public class SiteUseCase {
         );
     }
 
-    public UrlParts filterUrlParts(String url) {
+    public String urlValidation(String url) {
         Matcher matcher = URL_PATTERN.matcher(url);
-        if (matcher.find()) {
 
-            return UrlParts.builder()
-                    .protocol(matcher.group(1) + "://")
-                    .domain(matcher.group(2))
-                    .rootDomain(matcher.group(3))
-                    .build();
+        if (matcher.find()) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(matcher.group(1) + "://");
+            sb.append(matcher.group(2));
+            sb.append(".");
+            sb.append(matcher.group(3));
+
+            return sb.toString();
         }
 
         throw new ApiException(ErrorCode.NOT_VALID_URL);
