@@ -17,8 +17,7 @@ public class HomeController {
     }
 
     @GetMapping("/home")
-    public String showMainPage(Model model) {
-//        model.addAttribute("userList", "");
+    public String showMainPage() {
 
         return "home";
     }
