@@ -66,7 +66,7 @@
                         <img id="siteBadge" src="">
                     </div>
 
-                    <div class="content" id="codeBlock">
+                    <div class="block" id="codeBlock">
 
                     </div>
                 </div>
@@ -109,9 +109,11 @@
         let imageUrl = "https://hit.kmapshot.com/api/badge/svg?url=" + url;
         document.getElementById("siteBadge").src = imageUrl;
 
-        document.getElementById("codeBlock").innerText = "<a href='https://hit.kmapshot.com'>" +
-            "<img src=" + imageUrl + "> " +
-            "</a>"
+        document.getElementById("codeBlock").innerText += "<a href='https://hit.kmapshot.com'>";
+        document.getElementById("codeBlock").innerHTML += "<br>";
+        document.getElementById("codeBlock").innerText += "<img src=" + "'" + imageUrl + "'" + ">";
+        document.getElementById("codeBlock").innerHTML += "<br>";
+        document.getElementById("codeBlock").innerText += "</a>"
     }
 </script>
 </html>
