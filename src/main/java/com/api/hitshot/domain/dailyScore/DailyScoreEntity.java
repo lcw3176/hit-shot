@@ -36,4 +36,16 @@ public class DailyScoreEntity {
         return LocalDateTime.ofInstant(this.createdAt, seoulZone);
     }
 
+
+    public LocalDateTime getUtcTime() {
+        ZoneId utc = ZoneId.of("UTC");
+
+        return LocalDateTime.ofInstant(this.createdAt, utc);
+    }
+
+
+    public void increaseTodayCount() {
+        this.count++;
+    }
+
 }
