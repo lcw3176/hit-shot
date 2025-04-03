@@ -35,7 +35,7 @@ public class LogoMaker {
         }
 
         int labelWidth = LOGO.length() * 10;
-        int statusWidth = length * 10;
+        int statusWidth = length * 9;
         int totalWidth = labelWidth + statusWidth;
 
         return String.format(
