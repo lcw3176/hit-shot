@@ -20,8 +20,15 @@ public class VisitCounter {
     private final BucketCounter bucketCounter;
     private final DailyScoreService dailyScoreService;
 
-    public long onlyGetTotalVisitorsCount(String url) {
-        return siteService.readVisitors(url);
+    public SiteVisitor onlyGetTotalVisitorsCount(String url) {
+        ObjectId siteId = siteService.findIdByUrl(url);
+        long today = dailyScoreService.readTodayVisitors(siteId);
+        long total = siteService.readVisitors(url);
+
+        return SiteVisitor.builder()
+                .total(total)
+                .today(today)
+                .build();
     }
 
     @Transactional

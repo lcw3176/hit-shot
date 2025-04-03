@@ -57,8 +57,8 @@ public class BadgeController {
 
         String filteredUrl = urlParser.makeValidFormat(url);
 
-        long totalVisitor = visitCounter.onlyGetTotalVisitorsCount(filteredUrl);
-        String logo = logoMaker.makeOnlyTotalSvgLogo(totalVisitor, color);
+        SiteVisitor visitor = visitCounter.onlyGetTotalVisitorsCount(filteredUrl);
+        String logo = logoMaker.makeTodaySvgLogo(visitor.getToday(), visitor.getTotal(), color);
 
         return ResponseEntity.ok()
                 .headers(httpHeaders -> httpHeaders.add(HttpHeaders.CONTENT_TYPE, "image/svg+xml; charset=utf-8"))
