@@ -1,7 +1,5 @@
 package com.api.hitshot.domain.dailyScore;
 
-import com.api.hitshot.infra.exception.ApiException;
-import com.api.hitshot.infra.exception.status.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
@@ -28,7 +26,11 @@ public class DailyScoreService {
 
         DailyScoreEntity daily = dailyScoreRepository
                 .findBySiteIdAndCreatedAtBetween(siteId, startOfDay, endOfDay)
-                .orElseThrow(() -> new ApiException(ErrorCode.SITE_URL_NOT_FOUND));
+                .orElse(DailyScoreEntity.builder()
+                        .siteId(siteId)
+                        .count(0L)
+                        .createdAt(now)
+                        .build());
 
         return daily.getCount();
     }
