@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -18,7 +17,6 @@ public class DailyScoreService {
     private final DailyScoreRepository dailyScoreRepository;
 
 
-    @Transactional(readOnly = true)
     public long readTodayVisitors(ObjectId siteId) {
         Instant now = Instant.now();
         Instant startOfDay = now.atZone(ZoneOffset.UTC).toLocalDate().atStartOfDay().toInstant(ZoneOffset.UTC);
@@ -35,7 +33,7 @@ public class DailyScoreService {
         return daily.getCount();
     }
 
-    @Transactional
+    
     public long addTodayVisitors(ObjectId siteId) {
         Instant now = Instant.now();
         Instant startOfDay = now.atZone(ZoneOffset.UTC).toLocalDate().atStartOfDay().toInstant(ZoneOffset.UTC);
