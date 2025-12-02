@@ -20,6 +20,7 @@ public class VisitCounter {
     private final BucketCounter bucketCounter;
     private final DailyScoreService dailyScoreService;
 
+    @Transactional(readOnly = true)
     public SiteVisitor onlyGetTotalVisitorsCount(String url) {
         ObjectId siteId = siteService.findIdByUrl(url);
         long today = dailyScoreService.readTodayVisitors(siteId);
