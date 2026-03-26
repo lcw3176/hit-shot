@@ -1,7 +1,6 @@
 package com.api.hitshot.infra.exception;
 
 
-import com.api.hitshot.infra.client.slack.SlackClient;
 import com.api.hitshot.infra.exception.status.StatusCode;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
@@ -19,29 +18,23 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @Slf4j
 public class GlobalExceptionHandler {
 
-    private final SlackClient slackClient;
-
     @ExceptionHandler({ConstraintViolationException.class, IllegalStateException.class,
             MethodArgumentTypeMismatchException.class, IllegalArgumentException.class, MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void violationExceptionHandler(Exception e) {
         log.error(e.getMessage(), e);
-//        Sentry.captureException(e);
     }
 
     @ExceptionHandler({ClassCastException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public void botExceptionHandler(ClassCastException e) {
         log.error(e.getMessage(), e);
-//        Sentry.captureException(e);
     }
 
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<String> apiExceptionHandler(ApiException e) {
         StatusCode code = e.getCode();
         log.error(code.getMessage(), e);
-        slackClient.sendMessage(e);
-//        Sentry.captureException(e);
 
         return ResponseEntity.status(code.getHttpStatus())
                 .body(code.getMessage());
@@ -52,7 +45,5 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public void exceptionHandler(Exception e) {
         log.error(e.getMessage(), e);
-        slackClient.sendMessage(e);
-//        Sentry.captureException(e);
     }
 }

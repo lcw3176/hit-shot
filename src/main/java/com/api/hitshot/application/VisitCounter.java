@@ -2,6 +2,7 @@ package com.api.hitshot.application;
 
 import com.api.hitshot.application.model.SiteVisitor;
 import com.api.hitshot.domain.buckets.BucketCounter;
+import com.api.hitshot.domain.dailyScore.DailyScoreEntity;
 import com.api.hitshot.domain.dailyScore.DailyScoreService;
 import com.api.hitshot.domain.sites.SiteService;
 import com.api.hitshot.infra.exception.ApiException;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -48,6 +51,12 @@ public class VisitCounter {
         }
 
         throw new ApiException(ErrorCode.RATE_LIMIT_ACTIVATED);
+    }
+
+    @Transactional(readOnly = true)
+    public List<DailyScoreEntity> getDailyStats(String url, int days) {
+        ObjectId siteId = siteService.findIdByUrl(url);
+        return dailyScoreService.readDailyVisitors(siteId, days);
     }
 
 }

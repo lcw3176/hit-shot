@@ -4,6 +4,7 @@ import com.api.hitshot.application.LogoMaker;
 import com.api.hitshot.application.UrlParser;
 import com.api.hitshot.application.VisitCounter;
 import com.api.hitshot.application.model.SiteVisitor;
+import com.api.hitshot.domain.dailyScore.DailyScoreEntity;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +14,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -63,6 +70,32 @@ public class BadgeController {
         return ResponseEntity.ok()
                 .headers(httpHeaders -> httpHeaders.add(HttpHeaders.CONTENT_TYPE, "image/svg+xml; charset=utf-8"))
                 .body(logo);
+    }
+
+
+    @GetMapping("/stats/daily")
+    public ResponseEntity<Map<String, Object>> getDailyStats(@URL @RequestParam(value = "url") String url,
+                                                              @RequestParam(defaultValue = "30") int days) {
+
+        String filteredUrl = urlParser.makeValidFormat(url);
+        SiteVisitor visitor = visitCounter.onlyGetTotalVisitorsCount(filteredUrl);
+        List<DailyScoreEntity> dailyScores = visitCounter.getDailyStats(filteredUrl, days);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd");
+
+        Map<String, Long> dailyData = new LinkedHashMap<>();
+        for (DailyScoreEntity score : dailyScores) {
+            String date = score.getCreatedAt().atZone(ZoneOffset.UTC).format(formatter);
+            dailyData.put(date, score.getCount());
+        }
+
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("url", filteredUrl);
+        result.put("today", visitor.getToday());
+        result.put("total", visitor.getTotal());
+        result.put("daily", dailyData);
+
+        return ResponseEntity.ok(result);
     }
 
 

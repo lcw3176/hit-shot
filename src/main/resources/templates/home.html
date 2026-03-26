@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 
 <head>
     <meta charset="utf-8">
@@ -12,108 +12,539 @@
     <link href="https://hit.kmapshot.com/img/logo.png" rel="canonical">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>HitShot</title>
-    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --primary: #485fc7;
+            --primary-light: #eff1fa;
+            --dark: #363636;
+            --grey-light: #f5f5f5;
+        }
 
+        body {
+            background-color: #fafafa;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .main-container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #485fc7 0%, #3e56c4 50%, #7b68ee 100%);
+            border-radius: 12px;
+            padding: 3rem 2.5rem;
+            margin-bottom: 2rem;
+            color: white;
+        }
+
+        .hero-section .title,
+        .hero-section .subtitle {
+            color: white;
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #eee;
+        }
+
+        .card + .card {
+            margin-top: 1.5rem;
+        }
+
+        .card-header {
+            border-radius: 10px 10px 0 0;
+            box-shadow: none;
+            border-bottom: 1px solid #eee;
+        }
+
+        .card-header-title {
+            font-size: 1.1rem;
+        }
+
+        .badge-preview {
+            background: var(--grey-light);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .badge-preview img {
+            max-width: 100%;
+        }
+
+        .badge-placeholder {
+            color: #aaa;
+            font-size: 0.95rem;
+        }
+
+        .code-block {
+            background: #1e1e2e;
+            color: #cdd6f4;
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            position: relative;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .code-block .tag-text {
+            color: #f38ba8;
+        }
+
+        .code-block .attr-name {
+            color: #a6e3a1;
+        }
+
+        .code-block .attr-value {
+            color: #f9e2af;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #cdd6f4;
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .copy-btn.copied {
+            background: #a6e3a1;
+            color: #1e1e2e;
+            border-color: #a6e3a1;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-box {
+            background: white;
+            border-radius: 10px;
+            padding: 1.25rem;
+            text-align: center;
+            border: 1px solid #eee;
+        }
+
+        .stat-box .stat-label {
+            font-size: 0.8rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-box .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 280px;
+        }
+
+        .tabs-wrapper {
+            display: flex;
+            gap: 0;
+            margin-bottom: 0;
+        }
+
+        .tab-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: transparent;
+            color: #888;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .color-picker-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .color-picker-wrapper input[type="color"] {
+            width: 36px;
+            height: 36px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            padding: 2px;
+        }
+
+        .section-hidden {
+            display: none;
+        }
+
+        .footer-text {
+            text-align: center;
+            color: #aaa;
+            font-size: 0.8rem;
+            margin-top: 3rem;
+            padding-bottom: 2rem;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .input-group .input {
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+            .hero-section {
+                padding: 2rem 1.5rem;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .input-group {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="columns">
-    <div class="column is-2">
+<nav class="navbar is-white" role="navigation">
+    <div class="navbar-brand" style="max-width:860px;margin:0 auto;width:100%;padding:0 1.5rem;">
+        <a class="navbar-item" href="/home">
+            <strong style="font-size:1.2rem;letter-spacing:-0.5px;">HIT-SHOT</strong>
+        </a>
+    </div>
+</nav>
 
+<div class="main-container">
+
+    <div class="hero-section">
+        <p class="title is-3">Hit it with a shot on your site!</p>
+        <p class="subtitle is-6" style="opacity:0.85;">
+            Register your URL and get a visitor counter badge instantly.
+        </p>
     </div>
 
-    <div class="column">
-
-        <div class="navbar-brand">
-            <a class="navbar-item" href="https://hit.kmapshot.com/home">
-                <p class="title is-4 ml-5">HIT-SHOT</p>
-            </a>
-
+    <!-- URL Input -->
+    <div class="card">
+        <div class="card-header">
+            <p class="card-header-title">Generate Badge</p>
         </div>
-
-
-        <div class="container is-fluid ma-5">
-            <section class="hero is-link">
-                <div class="hero-body">
-                    <p class="title">Hit it with a shot on your site!</p>
-                    <p class="subtitle">page counter</p>
+        <div class="card-content">
+            <div class="field">
+                <label class="label">Site URL</label>
+                <div class="input-group">
+                    <input class="input" id="siteUrl" type="text"
+                           placeholder="https://example.com">
+                    <button class="button is-link" id="generateBtn" onclick="generateBadge()">
+                        Generate
+                    </button>
                 </div>
-            </section>
+                <p class="help">Enter the URL you want to track visitors for.</p>
+            </div>
 
-            <div class="box mt-5">
-                <div class="field">
-                    <label class="label">Site url</label>
-                    <div class="control">
-                        <input class="input" id="siteUrl"
-                               placeholder="enter or copy and paste your site // ex) https://kmapshot.com" type="text">
+            <div class="field">
+                <label class="label">Badge Color</label>
+                <div class="color-picker-wrapper">
+                    <input type="color" id="badgeColor" value="#44cc11">
+                    <span class="is-size-7 has-text-grey" id="colorHex">#44cc11</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Badge Preview & Code -->
+    <div class="card section-hidden" id="resultSection">
+        <div class="card-header">
+            <p class="card-header-title">Your Badge</p>
+        </div>
+        <div class="card-content">
+            <div class="badge-preview" id="badgePreview">
+                <img id="siteBadge" src="" alt="badge">
+            </div>
+
+            <div style="margin-top:1.25rem;">
+                <div class="tabs-wrapper">
+                    <button class="tab-btn active" onclick="switchTab('html')">HTML</button>
+                    <button class="tab-btn" onclick="switchTab('markdown')">Markdown</button>
+                    <button class="tab-btn" onclick="switchTab('bbcode')">BBCode</button>
+                </div>
+
+                <div class="tab-content active" id="tab-html">
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode('html')">Copy</button>
+                        <pre><code id="codeHtml"></code></pre>
                     </div>
                 </div>
-
-                <div class="field is-grouped">
-                    <div class="control">
-                        <button class="button is-link" onclick="loadBadge()">Generate</button>
+                <div class="tab-content" id="tab-markdown">
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode('markdown')">Copy</button>
+                        <pre><code id="codeMarkdown"></code></pre>
+                    </div>
+                </div>
+                <div class="tab-content" id="tab-bbcode">
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode('bbcode')">Copy</button>
+                        <pre><code id="codeBbcode"></code></pre>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="card mt-5">
-                <header class="card-header">
-                    <p class="card-header-title">Created Badge</p>
-                </header>
-                <div class="card-content">
-                    <div class="content">
-                        <img id="siteBadge" src="">
-                    </div>
-
-                    <div class="block" id="codeBlock">
-
-                    </div>
+    <!-- Stats Section -->
+    <div class="card section-hidden" id="statsSection">
+        <div class="card-header">
+            <p class="card-header-title">Visitor Statistics</p>
+        </div>
+        <div class="card-content">
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-label">Today</div>
+                    <div class="stat-value" id="statToday">-</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Total</div>
+                    <div class="stat-value" id="statTotal">-</div>
                 </div>
             </div>
 
+            <label class="label" style="font-size:0.9rem;">Daily Visitors (Last 30 days)</label>
+            <div class="chart-container">
+                <canvas id="dailyChart"></canvas>
+            </div>
         </div>
-
     </div>
 
-    <div class="column is-2">
-
-    </div>
-</div>
-
-<div class="container is-fluid adsBanner">
-    <div class="columns pr-5 pl-5">
-        <div class="column">
-
-        </div>
-
-        <div class="column">
-
-
-        </div>
-
-        <div class="column">
-
-
-        </div>
-
+    <div class="footer-text">
+        HitShot &mdash; Simple visitor counter badge for your site.
     </div>
 
 </div>
-</body>
 
 <script>
+    let dailyChart = null;
 
-    function loadBadge() {
-        let url = document.getElementById("siteUrl").value;
-        let imageUrl = "https://hit.kmapshot.com/api/badge/svg?url=" + url;
-        document.getElementById("siteBadge").src = imageUrl;
+    const colorInput = document.getElementById('badgeColor');
+    const colorHex = document.getElementById('colorHex');
 
-        document.getElementById("codeBlock").innerText += "<a href='https://hit.kmapshot.com'>";
-        document.getElementById("codeBlock").innerHTML += "<br>";
-        document.getElementById("codeBlock").innerText += "<img src=" + "'" + imageUrl + "'" + ">";
-        document.getElementById("codeBlock").innerHTML += "<br>";
-        document.getElementById("codeBlock").innerText += "</a>"
+    colorInput.addEventListener('input', function () {
+        colorHex.textContent = this.value;
+    });
+
+    document.getElementById('siteUrl').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') generateBadge();
+    });
+
+    function generateBadge() {
+        const url = document.getElementById('siteUrl').value.trim();
+        if (!url) return;
+
+        const color = encodeURIComponent(colorInput.value);
+        const imageUrl = '/api/badge/svg?url=' + encodeURIComponent(url) + '&color=' + color;
+        const fullImageUrl = 'https://hit.kmapshot.com/api/badge/svg?url=' + encodeURIComponent(url) + '&color=' + color;
+        const linkUrl = 'https://hit.kmapshot.com';
+
+        document.getElementById('siteBadge').src = imageUrl;
+        document.getElementById('resultSection').classList.remove('section-hidden');
+
+        // HTML code
+        const htmlCode = '<a href="' + linkUrl + '">\n  <img src="' + fullImageUrl + '" alt="hit-shot">\n</a>';
+        document.getElementById('codeHtml').textContent = htmlCode;
+
+        // Markdown code
+        const mdCode = '[![hit-shot](' + fullImageUrl + ')](' + linkUrl + ')';
+        document.getElementById('codeMarkdown').textContent = mdCode;
+
+        // BBCode
+        const bbCode = '[url=' + linkUrl + '][img]' + fullImageUrl + '[/img][/url]';
+        document.getElementById('codeBbcode').textContent = bbCode;
+
+        loadStats(url);
+    }
+
+    function formatHtml(code) {
+        return escapeHtml(code)
+            .replace(/&lt;(\/?[\w-]+)/g, '<span class="tag-text">&lt;$1</span>')
+            .replace(/&gt;/g, '<span class="tag-text">&gt;</span>')
+            .replace(/([\w-]+)=/g, '<span class="attr-name">$1</span>=')
+            .replace(/"([^"]*)"/g, '<span class="attr-value">"$1"</span>');
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function copyCode(btn, type) {
+        const codeEl = document.getElementById('code' + type.charAt(0).toUpperCase() + type.slice(1));
+        const text = codeEl.dataset.raw;
+
+        navigator.clipboard.writeText(text).then(function () {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(function () {
+                btn.textContent = 'Copy';
+                btn.classList.remove('copied');
+            }, 2000);
+        });
+    }
+
+    function switchTab(type) {
+        document.querySelectorAll('.tab-btn').forEach(function (btn) { btn.classList.remove('active'); });
+        document.querySelectorAll('.tab-content').forEach(function (tab) { tab.classList.remove('active'); });
+
+        document.getElementById('tab-' + type).classList.add('active');
+        document.querySelectorAll('.tab-btn').forEach(function (btn) {
+            if (btn.textContent.toLowerCase() === type) btn.classList.add('active');
+        });
+    }
+
+    function loadStats(url) {
+        fetch('/api/badge/stats/daily?url=' + encodeURIComponent(url) + '&days=30')
+            .then(function (res) {
+                if (!res.ok) throw new Error('Stats not available');
+                return res.json();
+            })
+            .then(function (data) {
+                document.getElementById('statsSection').classList.remove('section-hidden');
+                document.getElementById('statToday').textContent = data.today.toLocaleString();
+                document.getElementById('statTotal').textContent = data.total.toLocaleString();
+
+                renderChart(data.daily);
+            })
+            .catch(function () {
+                document.getElementById('statsSection').classList.add('section-hidden');
+            });
+    }
+
+    function renderChart(dailyData) {
+        const labels = Object.keys(dailyData);
+        const values = Object.values(dailyData);
+
+        if (dailyChart) {
+            dailyChart.destroy();
+        }
+
+        const ctx = document.getElementById('dailyChart').getContext('2d');
+
+        const gradient = ctx.createLinearGradient(0, 0, 0, 280);
+        gradient.addColorStop(0, 'rgba(72, 95, 199, 0.3)');
+        gradient.addColorStop(1, 'rgba(72, 95, 199, 0.02)');
+
+        dailyChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Visitors',
+                    data: values,
+                    borderColor: '#485fc7',
+                    backgroundColor: gradient,
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 3,
+                    pointBackgroundColor: '#485fc7',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#363636',
+                        titleFont: { size: 12 },
+                        bodyFont: { size: 13, weight: 'bold' },
+                        padding: 10,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function (context) {
+                                return context.parsed.y.toLocaleString() + ' visitors';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: {
+                            font: { size: 11 },
+                            color: '#aaa',
+                            maxTicksLimit: 10
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#f0f0f0' },
+                        ticks: {
+                            font: { size: 11 },
+                            color: '#aaa',
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
     }
 </script>
+
+</body>
 </html>
