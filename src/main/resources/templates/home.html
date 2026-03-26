@@ -12,247 +12,361 @@
     <link href="https://hit.kmapshot.com/img/logo.png" rel="canonical">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <title>HitShot</title>
-    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
-        :root {
-            --primary: #485fc7;
-            --primary-light: #eff1fa;
-            --dark: #363636;
-            --grey-light: #f5f5f5;
+        * {
+            box-sizing: border-box;
         }
 
         body {
-            background-color: #fafafa;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+            margin: 0;
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .navbar {
-            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        /* Navbar */
+        .nav {
+            border-bottom: 1px solid #f0f0f0;
+            padding: 0.9rem 2rem;
         }
 
-        .main-container {
-            max-width: 860px;
+        .nav-inner {
+            max-width: 780px;
             margin: 0 auto;
-            padding: 2rem 1.5rem 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .hero-section {
-            background: linear-gradient(135deg, #485fc7 0%, #3e56c4 50%, #7b68ee 100%);
-            border-radius: 12px;
-            padding: 3rem 2.5rem;
-            margin-bottom: 2rem;
-            color: white;
-        }
-
-        .hero-section .title,
-        .hero-section .subtitle {
-            color: white;
-        }
-
-        .card {
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            border: 1px solid #eee;
-        }
-
-        .card + .card {
-            margin-top: 1.5rem;
-        }
-
-        .card-header {
-            border-radius: 10px 10px 0 0;
-            box-shadow: none;
-            border-bottom: 1px solid #eee;
-        }
-
-        .card-header-title {
+        .nav-logo {
             font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-link {
+            font-size: 0.8rem;
+            color: #999;
+            text-decoration: none;
+        }
+
+        /* Main */
+        .main {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 5rem;
+        }
+
+        /* Hero */
+        .hero {
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.2;
+            margin: 0 0 0.6rem;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.05rem;
+            color: #666;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #999;
+            margin-bottom: 1rem;
+        }
+
+        /* Input area */
+        .input-card {
+            background: #fafafa;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .url-input {
+            flex: 1;
+            padding: 0.7rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+            background: #fff;
+        }
+
+        .url-input:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.08);
+        }
+
+        .url-input::placeholder {
+            color: #bbb;
+        }
+
+        .generate-btn {
+            padding: 0.7rem 1.4rem;
+            background: #1a1a1a;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .generate-btn:hover {
+            background: #333;
+        }
+
+        .option-row {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .option-label {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .color-input {
+            width: 28px;
+            height: 28px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            padding: 1px;
+            background: none;
+        }
+
+        .color-hex {
+            font-size: 0.8rem;
+            color: #aaa;
+            font-family: 'SF Mono', 'Consolas', monospace;
+        }
+
+        /* Badge preview */
+        .badge-area {
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            overflow: hidden;
         }
 
         .badge-preview {
-            background: var(--grey-light);
-            border-radius: 8px;
+            background: #fafafa;
             padding: 2rem;
-            text-align: center;
-            min-height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
+            min-height: 72px;
         }
 
         .badge-preview img {
             max-width: 100%;
         }
 
-        .badge-placeholder {
+        /* Code tabs */
+        .code-area {
+            border-top: 1px solid #e8e8e8;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e8e8e8;
+            padding: 0 1rem;
+            background: #fff;
+        }
+
+        .tab {
+            padding: 0.6rem 0.8rem;
+            border: none;
+            background: transparent;
             color: #aaa;
-            font-size: 0.95rem;
+            font-size: 0.78rem;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            transition: all 0.15s;
+        }
+
+        .tab.active {
+            color: #1a1a1a;
+            border-bottom-color: #1a1a1a;
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
         }
 
         .code-block {
-            background: #1e1e2e;
-            color: #cdd6f4;
-            border-radius: 8px;
-            padding: 1rem 1.25rem;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.85rem;
-            line-height: 1.6;
+            background: #1a1a2e;
+            color: #e2e8f0;
+            padding: 1rem 1.2rem;
+            font-family: 'SF Mono', 'Consolas', 'Monaco', monospace;
+            font-size: 0.8rem;
+            line-height: 1.7;
             overflow-x: auto;
             position: relative;
+            margin: 0;
+        }
+
+        .code-block pre {
+            margin: 0;
             white-space: pre-wrap;
             word-break: break-all;
         }
 
-        .code-block .tag-text {
-            color: #f38ba8;
-        }
-
-        .code-block .attr-name {
-            color: #a6e3a1;
-        }
-
-        .code-block .attr-value {
-            color: #f9e2af;
+        .code-block code {
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+            background: none;
+            padding: 0;
         }
 
         .copy-btn {
             position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: #cdd6f4;
-            border-radius: 6px;
-            padding: 4px 10px;
-            font-size: 0.75rem;
+            top: 0.6rem;
+            right: 0.6rem;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #94a3b8;
+            border-radius: 5px;
+            padding: 3px 10px;
+            font-size: 0.7rem;
+            font-family: inherit;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s;
         }
 
         .copy-btn:hover {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.15);
+            color: #e2e8f0;
         }
 
         .copy-btn.copied {
-            background: #a6e3a1;
-            color: #1e1e2e;
-            border-color: #a6e3a1;
+            background: #22c55e;
+            color: #fff;
+            border-color: #22c55e;
         }
 
-        .stats-grid {
+        /* Stats */
+        .stats-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
 
-        .stat-box {
-            background: white;
+        .stat-card {
+            background: #fafafa;
+            border: 1px solid #e8e8e8;
             border-radius: 10px;
-            padding: 1.25rem;
+            padding: 1.2rem;
             text-align: center;
-            border: 1px solid #eee;
         }
 
-        .stat-box .stat-label {
-            font-size: 0.8rem;
-            color: #888;
+        .stat-label {
+            font-size: 0.7rem;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.3rem;
+            letter-spacing: 0.8px;
+            color: #999;
+            margin-bottom: 0.25rem;
         }
 
-        .stat-box .stat-value {
+        .stat-value {
             font-size: 1.8rem;
             font-weight: 700;
-            color: var(--dark);
+            color: #1a1a1a;
+            letter-spacing: -0.5px;
+        }
+
+        .chart-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #888;
+            margin-bottom: 0.8rem;
         }
 
         .chart-container {
             position: relative;
-            height: 280px;
+            height: 260px;
         }
 
-        .tabs-wrapper {
-            display: flex;
-            gap: 0;
-            margin-bottom: 0;
-        }
-
-        .tab-btn {
-            padding: 0.5rem 1rem;
-            border: none;
-            background: transparent;
-            color: #888;
-            font-size: 0.85rem;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s;
-        }
-
-        .tab-btn.active {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
-            font-weight: 600;
-        }
-
-        .tab-content {
+        /* Hidden state */
+        .hidden {
             display: none;
         }
 
-        .tab-content.active {
-            display: block;
-        }
-
-        .color-picker-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .color-picker-wrapper input[type="color"] {
-            width: 36px;
-            height: 36px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            cursor: pointer;
-            padding: 2px;
-        }
-
-        .section-hidden {
-            display: none;
-        }
-
-        .footer-text {
+        /* Footer */
+        .footer {
             text-align: center;
-            color: #aaa;
-            font-size: 0.8rem;
-            margin-top: 3rem;
-            padding-bottom: 2rem;
+            padding: 2rem 0 3rem;
+            font-size: 0.75rem;
+            color: #ccc;
         }
 
-        .input-group {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .input-group .input {
-            flex: 1;
-        }
-
-        @media (max-width: 768px) {
-            .main-container {
-                padding: 1rem;
+        /* Responsive */
+        @media (max-width: 640px) {
+            .main {
+                padding: 2rem 1rem 4rem;
             }
-            .hero-section {
-                padding: 2rem 1.5rem;
+            .hero h1 {
+                font-size: 1.7rem;
             }
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .input-group {
+            .input-row {
                 flex-direction: column;
+            }
+            .generate-btn {
+                width: 100%;
             }
         }
     </style>
@@ -260,81 +374,63 @@
 
 <body>
 
-<nav class="navbar is-white" role="navigation">
-    <div class="navbar-brand" style="max-width:860px;margin:0 auto;width:100%;padding:0 1.5rem;">
-        <a class="navbar-item" href="/home">
-            <strong style="font-size:1.2rem;letter-spacing:-0.5px;">HIT-SHOT</strong>
-        </a>
+<nav class="nav">
+    <div class="nav-inner">
+        <a class="nav-logo" href="/home">HIT-SHOT</a>
+        <span class="nav-link">visitor counter badge</span>
     </div>
 </nav>
 
-<div class="main-container">
+<div class="main">
 
-    <div class="hero-section">
-        <p class="title is-3">Hit it with a shot on your site!</p>
-        <p class="subtitle is-6" style="opacity:0.85;">
-            Register your URL and get a visitor counter badge instantly.
-        </p>
+    <!-- Hero -->
+    <div class="hero">
+        <h1>Track your site visitors<br>with a <span>single badge</span>.</h1>
+        <p>Register your URL, embed the badge, and watch your visitor count grow.</p>
     </div>
 
-    <!-- URL Input -->
-    <div class="card">
-        <div class="card-header">
-            <p class="card-header-title">Generate Badge</p>
-        </div>
-        <div class="card-content">
-            <div class="field">
-                <label class="label">Site URL</label>
-                <div class="input-group">
-                    <input class="input" id="siteUrl" type="text"
-                           placeholder="https://example.com">
-                    <button class="button is-link" id="generateBtn" onclick="generateBadge()">
-                        Generate
-                    </button>
-                </div>
-                <p class="help">Enter the URL you want to track visitors for.</p>
+    <!-- Generate -->
+    <div class="section">
+        <div class="section-title">Generate Badge</div>
+        <div class="input-card">
+            <div class="input-row">
+                <input class="url-input" id="siteUrl" type="text" placeholder="https://your-site.com">
+                <button class="generate-btn" onclick="generateBadge()">Generate</button>
             </div>
-
-            <div class="field">
-                <label class="label">Badge Color</label>
-                <div class="color-picker-wrapper">
-                    <input type="color" id="badgeColor" value="#44cc11">
-                    <span class="is-size-7 has-text-grey" id="colorHex">#44cc11</span>
-                </div>
+            <div class="option-row">
+                <span class="option-label">Color</span>
+                <input class="color-input" type="color" id="badgeColor" value="#44cc11">
+                <span class="color-hex" id="colorHex">#44cc11</span>
             </div>
         </div>
     </div>
 
-    <!-- Badge Preview & Code -->
-    <div class="card section-hidden" id="resultSection">
-        <div class="card-header">
-            <p class="card-header-title">Your Badge</p>
-        </div>
-        <div class="card-content">
-            <div class="badge-preview" id="badgePreview">
+    <!-- Result -->
+    <div class="section hidden" id="resultSection">
+        <div class="section-title">Preview & Code</div>
+        <div class="badge-area">
+            <div class="badge-preview">
                 <img id="siteBadge" src="" alt="badge">
             </div>
-
-            <div style="margin-top:1.25rem;">
-                <div class="tabs-wrapper">
-                    <button class="tab-btn active" onclick="switchTab('html')">HTML</button>
-                    <button class="tab-btn" onclick="switchTab('markdown')">Markdown</button>
-                    <button class="tab-btn" onclick="switchTab('bbcode')">BBCode</button>
+            <div class="code-area">
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab('html')">HTML</button>
+                    <button class="tab" onclick="switchTab('markdown')">Markdown</button>
+                    <button class="tab" onclick="switchTab('bbcode')">BBCode</button>
                 </div>
-
-                <div class="tab-content active" id="tab-html">
+                <div class="tab-panel active" id="tab-html">
                     <div class="code-block">
                         <button class="copy-btn" onclick="copyCode('html')">Copy</button>
                         <pre><code id="codeHtml"></code></pre>
                     </div>
                 </div>
-                <div class="tab-content" id="tab-markdown">
+                <div class="tab-panel" id="tab-markdown">
                     <div class="code-block">
                         <button class="copy-btn" onclick="copyCode('markdown')">Copy</button>
                         <pre><code id="codeMarkdown"></code></pre>
                     </div>
                 </div>
-                <div class="tab-content" id="tab-bbcode">
+                <div class="tab-panel" id="tab-bbcode">
                     <div class="code-block">
                         <button class="copy-btn" onclick="copyCode('bbcode')">Copy</button>
                         <pre><code id="codeBbcode"></code></pre>
@@ -344,32 +440,27 @@
         </div>
     </div>
 
-    <!-- Stats Section -->
-    <div class="card section-hidden" id="statsSection">
-        <div class="card-header">
-            <p class="card-header-title">Visitor Statistics</p>
+    <!-- Stats -->
+    <div class="section hidden" id="statsSection">
+        <div class="section-title">Statistics</div>
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-label">Today</div>
+                <div class="stat-value" id="statToday">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total</div>
+                <div class="stat-value" id="statTotal">-</div>
+            </div>
         </div>
-        <div class="card-content">
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <div class="stat-label">Today</div>
-                    <div class="stat-value" id="statToday">-</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-label">Total</div>
-                    <div class="stat-value" id="statTotal">-</div>
-                </div>
-            </div>
-
-            <label class="label" style="font-size:0.9rem;">Daily Visitors (Last 30 days)</label>
-            <div class="chart-container">
-                <canvas id="dailyChart"></canvas>
-            </div>
+        <div class="chart-label">Daily visitors &mdash; last 30 days</div>
+        <div class="chart-container">
+            <canvas id="dailyChart"></canvas>
         </div>
     </div>
 
-    <div class="footer-text">
-        HitShot &mdash; Simple visitor counter badge for your site.
+    <div class="footer">
+        HitShot &mdash; simple visitor counter badge for your site.
     </div>
 
 </div>
@@ -398,13 +489,13 @@
         const linkUrl = 'https://hit.kmapshot.com';
 
         document.getElementById('siteBadge').src = imageUrl;
-        document.getElementById('resultSection').classList.remove('section-hidden');
+        document.getElementById('resultSection').classList.remove('hidden');
 
-        // HTML code
+        // HTML
         const htmlCode = '<a href="' + linkUrl + '">\n  <img src="' + fullImageUrl + '" alt="hit-shot">\n</a>';
         document.getElementById('codeHtml').textContent = htmlCode;
 
-        // Markdown code
+        // Markdown
         const mdCode = '[![hit-shot](' + fullImageUrl + ')](' + linkUrl + ')';
         document.getElementById('codeMarkdown').textContent = mdCode;
 
@@ -415,23 +506,10 @@
         loadStats(url);
     }
 
-    function formatHtml(code) {
-        return escapeHtml(code)
-            .replace(/&lt;(\/?[\w-]+)/g, '<span class="tag-text">&lt;$1</span>')
-            .replace(/&gt;/g, '<span class="tag-text">&gt;</span>')
-            .replace(/([\w-]+)=/g, '<span class="attr-name">$1</span>=')
-            .replace(/"([^"]*)"/g, '<span class="attr-value">"$1"</span>');
-    }
-
-    function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-
-    function copyCode(btn, type) {
+    function copyCode(type) {
         const codeEl = document.getElementById('code' + type.charAt(0).toUpperCase() + type.slice(1));
-        const text = codeEl.dataset.raw;
+        const text = codeEl.textContent;
+        const btn = codeEl.closest('.code-block').querySelector('.copy-btn');
 
         navigator.clipboard.writeText(text).then(function () {
             btn.textContent = 'Copied!';
@@ -444,12 +522,12 @@
     }
 
     function switchTab(type) {
-        document.querySelectorAll('.tab-btn').forEach(function (btn) { btn.classList.remove('active'); });
-        document.querySelectorAll('.tab-content').forEach(function (tab) { tab.classList.remove('active'); });
+        document.querySelectorAll('.tab').forEach(function (t) { t.classList.remove('active'); });
+        document.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.remove('active'); });
 
         document.getElementById('tab-' + type).classList.add('active');
-        document.querySelectorAll('.tab-btn').forEach(function (btn) {
-            if (btn.textContent.toLowerCase() === type) btn.classList.add('active');
+        document.querySelectorAll('.tab').forEach(function (t) {
+            if (t.textContent.toLowerCase() === type) t.classList.add('active');
         });
     }
 
@@ -460,14 +538,13 @@
                 return res.json();
             })
             .then(function (data) {
-                document.getElementById('statsSection').classList.remove('section-hidden');
+                document.getElementById('statsSection').classList.remove('hidden');
                 document.getElementById('statToday').textContent = data.today.toLocaleString();
                 document.getElementById('statTotal').textContent = data.total.toLocaleString();
-
                 renderChart(data.daily);
             })
             .catch(function () {
-                document.getElementById('statsSection').classList.add('section-hidden');
+                document.getElementById('statsSection').classList.add('hidden');
             });
     }
 
@@ -475,15 +552,13 @@
         const labels = Object.keys(dailyData);
         const values = Object.values(dailyData);
 
-        if (dailyChart) {
-            dailyChart.destroy();
-        }
+        if (dailyChart) dailyChart.destroy();
 
         const ctx = document.getElementById('dailyChart').getContext('2d');
 
-        const gradient = ctx.createLinearGradient(0, 0, 0, 280);
-        gradient.addColorStop(0, 'rgba(72, 95, 199, 0.3)');
-        gradient.addColorStop(1, 'rgba(72, 95, 199, 0.02)');
+        const gradient = ctx.createLinearGradient(0, 0, 0, 260);
+        gradient.addColorStop(0, 'rgba(79, 70, 229, 0.15)');
+        gradient.addColorStop(1, 'rgba(79, 70, 229, 0)');
 
         dailyChart = new Chart(ctx, {
             type: 'line',
@@ -492,32 +567,38 @@
                 datasets: [{
                     label: 'Visitors',
                     data: values,
-                    borderColor: '#485fc7',
+                    borderColor: '#4f46e5',
                     backgroundColor: gradient,
                     borderWidth: 2,
                     fill: true,
-                    tension: 0.3,
-                    pointRadius: 3,
-                    pointBackgroundColor: '#485fc7',
+                    tension: 0.35,
+                    pointRadius: 2.5,
+                    pointBackgroundColor: '#4f46e5',
                     pointBorderColor: '#fff',
                     pointBorderWidth: 2,
-                    pointHoverRadius: 6
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: '#4f46e5'
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: '#363636',
-                        titleFont: { size: 12 },
-                        bodyFont: { size: 13, weight: 'bold' },
-                        padding: 10,
-                        cornerRadius: 8,
+                        backgroundColor: '#1a1a1a',
+                        titleFont: { size: 11, weight: '500' },
+                        bodyFont: { size: 13, weight: '600' },
+                        padding: { top: 8, bottom: 8, left: 12, right: 12 },
+                        cornerRadius: 6,
+                        displayColors: false,
                         callbacks: {
-                            label: function (context) {
-                                return context.parsed.y.toLocaleString() + ' visitors';
+                            label: function (ctx) {
+                                return ctx.parsed.y.toLocaleString() + ' visitors';
                             }
                         }
                     }
@@ -525,18 +606,20 @@
                 scales: {
                     x: {
                         grid: { display: false },
+                        border: { display: false },
                         ticks: {
                             font: { size: 11 },
-                            color: '#aaa',
-                            maxTicksLimit: 10
+                            color: '#bbb',
+                            maxTicksLimit: 8
                         }
                     },
                     y: {
                         beginAtZero: true,
-                        grid: { color: '#f0f0f0' },
+                        grid: { color: '#f5f5f5' },
+                        border: { display: false },
                         ticks: {
                             font: { size: 11 },
-                            color: '#aaa',
+                            color: '#bbb',
                             precision: 0
                         }
                     }
