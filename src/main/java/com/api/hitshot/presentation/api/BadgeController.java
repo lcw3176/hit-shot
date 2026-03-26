@@ -34,9 +34,10 @@ public class BadgeController {
 
     @GetMapping("/svg")
     public ResponseEntity<String> getBadgeWithIncrement(@URL @RequestParam(value = "url") String url,
-                                                        @RequestParam(defaultValue = "#4c1") String color) {
+                                                        @RequestParam(defaultValue = "#4c1") String color,
+                                                        @RequestParam(required = false) String path) {
 
-        String filteredUrl = urlParser.makeValidFormat(url);
+        String filteredUrl = resolveUrl(url, path);
 
         SiteVisitor visitor = visitCounter.increaseAndGetCount(filteredUrl);
         String logo = logoMaker.makeTodaySvgLogo(visitor.getToday(), visitor.getTotal(), color);
@@ -48,9 +49,10 @@ public class BadgeController {
 
 
     @GetMapping("/hidden")
-    public ResponseEntity<Void> increaseCountWithoutLogo(@URL @RequestParam(value = "url") String url) {
+    public ResponseEntity<Void> increaseCountWithoutLogo(@URL @RequestParam(value = "url") String url,
+                                                         @RequestParam(required = false) String path) {
 
-        String filteredUrl = urlParser.makeValidFormat(url);
+        String filteredUrl = resolveUrl(url, path);
 
         visitCounter.increaseAndGetCount(filteredUrl);
 
@@ -60,9 +62,10 @@ public class BadgeController {
 
     @GetMapping("/view/total-count")
     public ResponseEntity<String> getBadgeWithoutIncrement(@URL @RequestParam(value = "url") String url,
-                                                           @RequestParam(defaultValue = "#4c1") String color) {
+                                                           @RequestParam(defaultValue = "#4c1") String color,
+                                                           @RequestParam(required = false) String path) {
 
-        String filteredUrl = urlParser.makeValidFormat(url);
+        String filteredUrl = resolveUrl(url, path);
 
         SiteVisitor visitor = visitCounter.onlyGetTotalVisitorsCount(filteredUrl);
         String logo = logoMaker.makeTodaySvgLogo(visitor.getToday(), visitor.getTotal(), color);
@@ -75,9 +78,10 @@ public class BadgeController {
 
     @GetMapping("/stats/daily")
     public ResponseEntity<Map<String, Object>> getDailyStats(@URL @RequestParam(value = "url") String url,
-                                                              @RequestParam(defaultValue = "30") int days) {
+                                                             @RequestParam(defaultValue = "30") int days,
+                                                             @RequestParam(required = false) String path) {
 
-        String filteredUrl = urlParser.makeValidFormat(url);
+        String filteredUrl = resolveUrl(url, path);
         SiteVisitor visitor = visitCounter.onlyGetTotalVisitorsCount(filteredUrl);
         List<DailyScoreEntity> dailyScores = visitCounter.getDailyStats(filteredUrl, days);
 
@@ -98,5 +102,12 @@ public class BadgeController {
         return ResponseEntity.ok(result);
     }
 
+
+    private String resolveUrl(String url, String path) {
+        if (path != null && !path.isBlank()) {
+            return urlParser.makeValidFormatWithPath(url, path);
+        }
+        return urlParser.makeValidFormat(url);
+    }
 
 }

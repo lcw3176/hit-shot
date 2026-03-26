@@ -117,6 +117,36 @@ class UrlParserTest {
     }
 
     @Test
+    void 경로_파라미터로_상세경로_추적_테스트() {
+        String result = urlParser.makeValidFormatWithPath("https://example.com", "/blog/post-1");
+        assertEquals("https://example.com/blog/post-1", result);
+    }
+
+    @Test
+    void 경로_파라미터_슬래시_없이도_동작_테스트() {
+        String result = urlParser.makeValidFormatWithPath("https://example.com", "blog/post-1");
+        assertEquals("https://example.com/blog/post-1", result);
+    }
+
+    @Test
+    void 경로_파라미터_후행슬래시_제거_테스트() {
+        String result = urlParser.makeValidFormatWithPath("https://example.com", "/blog/");
+        assertEquals("https://example.com/blog", result);
+    }
+
+    @Test
+    void 경로_파라미터_빈값이면_도메인만_반환_테스트() {
+        String result = urlParser.makeValidFormatWithPath("https://example.com", "/");
+        assertEquals("https://example.com", result);
+    }
+
+    @Test
+    void 경로_파라미터_없으면_기존과_동일_테스트() {
+        String result = urlParser.makeValidFormat("https://example.com/blog/post-1");
+        assertEquals("https://example.com", result);
+    }
+
+    @Test
     void NULL_URL_예외_테스트() {
         assertThrows(Exception.class, () -> {
             urlParser.makeValidFormat(null);

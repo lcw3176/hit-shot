@@ -21,6 +21,7 @@ done — no JavaScript SDK, no account signup, no tracking scripts.
 
 - **Zero-config badge** — just add an image tag
 - **Today / Total** count in a single badge
+- **Path-level tracking** — track `/blog`, `/about` separately with `withPath=true`
 - **Daily statistics** with chart visualization
 - **Custom badge color** via `color` parameter
 - **Rate limiting** — 500 req/min per domain (Bucket4j)
@@ -48,6 +49,15 @@ done — no JavaScript SDK, no account signup, no tracking scripts.
 [url=https://hit.kmapshot.com][img]https://hit.kmapshot.com/api/badge/svg?url=https://your-site.com[/img][/url]
 ```
 
+### Track specific pages
+
+Add `withPath=true` to track each path separately:
+
+```html
+<!-- Tracks example.com/blog independently from example.com -->
+<img src="https://hit.kmapshot.com/api/badge/svg?url=https://example.com/blog&withPath=true">
+```
+
 ## API
 
 | Endpoint                                            | Method | Description                                   |
@@ -59,11 +69,12 @@ done — no JavaScript SDK, no account signup, no tracking scripts.
 
 ### Parameters
 
-| Parameter | Required | Default | Description                    |
-|-----------|----------|---------|--------------------------------|
-| `url`     | Yes      | —       | Target site URL                |
-| `color`   | No       | `#4c1`  | Badge color (hex)              |
-| `days`    | No       | `30`    | Number of days for daily stats |
+| Parameter  | Required | Default | Description                                 |
+|------------|----------|---------|---------------------------------------------|
+| `url`      | Yes      | —       | Target site URL                             |
+| `color`    | No       | `#4c1`  | Badge color (hex)                           |
+| `days`     | No       | `30`    | Number of days for daily stats              |
+| `withPath` | No       | `false` | `true` to track per-path (e.g. `/blog/foo`) |
 
 ### Example: Daily Stats Response
 
