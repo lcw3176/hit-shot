@@ -35,6 +35,9 @@ dependencies {
 
     implementation 'com.bucket4j:bucket4j-core:8.7.0'
 
+    implementation 'io.sentry:sentry-spring-boot-starter-jakarta:8.49.0'
+    implementation 'io.sentry:sentry-logback:8.49.0'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
