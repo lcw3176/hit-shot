@@ -22,4 +22,9 @@ public class HomeController {
         return "home";
     }
 
+    @GetMapping("/analytics")
+    public String showAnalytics() {
+        return "analytics";
+    }
+
 }

@@ -22,13 +22,14 @@ public class GlobalExceptionHandler {
             MethodArgumentTypeMismatchException.class, IllegalArgumentException.class, MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void violationExceptionHandler(Exception e) {
-        log.error(e.getMessage(), e);
+        // Validation messages can embed submitted paths or campaign values.
+        log.warn("Invalid request");
     }
 
     @ExceptionHandler({ClassCastException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public void botExceptionHandler(ClassCastException e) {
-        log.error(e.getMessage(), e);
+        log.warn("Resource not found");
     }
 
     @ExceptionHandler(ApiException.class)
@@ -44,6 +45,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public void exceptionHandler(Exception e) {
-        log.error(e.getMessage(), e);
+        // Avoid exporting request data embedded in parser and database exceptions.
+        log.error("Request failed: {}", e.getClass().getSimpleName());
     }
 }
