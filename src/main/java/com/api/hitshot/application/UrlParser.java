@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 public class UrlParser {
 
     private static final Pattern URL_PATTERN = Pattern.compile(
-            "^(https?|ftp)://(?:www\\.)?([a-zA-Z0-9.-]+)(/[^?#]*)?"
+            "^(https?|ftp)://(?:www\\.)?([a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*)(?::[0-9]{1,5})?(?:[/?#]|$)"
     );
 
     public String makeValidFormat(String url) {

@@ -1,0 +1,11 @@
+# Decisions
+
+## 2026-10-24: Blog visit analysis
+
+- The public badge count remains a separate feature. A visit event contains a random browser UUID, pathname, campaign code, referrer **origin**, and server time. Raw IP addresses, full referrer URLs, and query strings are not persisted. A browser UUID is not evidence of a particular person or company.
+- MongoDB `visit_events.expiresAt` has a TTL index with expiry at 30 days. MongoDB TTL deletion runs asynchronously, so expiry is not instantaneous. `spring.data.mongodb.auto-index-creation=true` is necessary for the annotated TTL index to exist; verify the index after deployment.
+- The read API requires `ANALYTICS_ADMIN_TOKEN` via `X-Analytics-Admin-Token`. With no configured token, reads fail closed. The `/analytics` page keeps the token in memory only and renders response fields with `textContent`.
+- Set `ANALYTICS_ADMIN_TOKEN` manually in the deployment environment before using `/analytics`; use a long random secret and never put it in a URL or repository. The public collector accepts only the blog's `Origin`, `/posts/:slug/` paths, and at most 300 events per minute per process. `Origin` can be forged outside a browser, so this is an abuse guard rather than authentication.
+- The old request filter logged IP, full query string, and body at INFO while Sentry log capture was enabled. This could leak campaign codes and tracking identifiers. It now logs only method and status and disables Sentry INFO logs. Existing historical logs need separate retention review.
+- Sentry's `beforeSend` drops events from analytics routes and strips request, user, breadcrumbs, extras, and tags from other events. Check the Sentry project setting for automatic IP storage and historical events separately; this code cannot delete previously received data.
+- New badge URLs previously failed: `increaseAndGetCount` asked for the site ID before `addVisitors` could create the site. The home page's preview and stats endpoints were read-only and also failed on unregistered URLs. Explicit registration now creates a zero-count site before preview, and the increment path ensures it exists before updating daily score. Never increment a count just to preview a badge.
