@@ -79,7 +79,7 @@ class VisitCounterTest {
 
         when(bucketCounter.getBucketForDomain(testUrl)).thenReturn(bucket);
         when(bucket.tryConsume(1)).thenReturn(true);
-        when(siteService.ensureSite(testUrl)).thenReturn(testSiteId);
+        when(siteService.findIdByUrl(testUrl)).thenReturn(testSiteId);
         when(dailyScoreService.addTodayVisitors(testSiteId)).thenReturn(expectedToday);
         when(siteService.addVisitors(testUrl)).thenReturn(expectedTotal);
 
@@ -93,20 +93,9 @@ class VisitCounterTest {
 
         verify(bucketCounter, times(1)).getBucketForDomain(testUrl);
         verify(bucket, times(1)).tryConsume(1);
-        verify(siteService, times(1)).ensureSite(testUrl);
+        verify(siteService, times(1)).findIdByUrl(testUrl);
         verify(dailyScoreService, times(1)).addTodayVisitors(testSiteId);
         verify(siteService, times(1)).addVisitors(testUrl);
-    }
-
-    @Test
-    void 신규_주소는_카운트_전에_생성한다() {
-        when(bucketCounter.getBucketForDomain(testUrl)).thenReturn(bucket);
-        when(bucket.tryConsume(1)).thenReturn(true);
-        when(siteService.ensureSite(testUrl)).thenReturn(testSiteId);
-        visitCounter.increaseAndGetCount(testUrl);
-        var order = inOrder(siteService, dailyScoreService);
-        order.verify(siteService).ensureSite(testUrl);
-        order.verify(dailyScoreService).addTodayVisitors(testSiteId);
     }
 
     @Test
@@ -158,7 +147,7 @@ class VisitCounterTest {
 
         when(bucketCounter.getBucketForDomain(anotherUrl)).thenReturn(bucket);
         when(bucket.tryConsume(1)).thenReturn(true);
-        when(siteService.ensureSite(anotherUrl)).thenReturn(anotherSiteId);
+        when(siteService.findIdByUrl(anotherUrl)).thenReturn(anotherSiteId);
         when(dailyScoreService.addTodayVisitors(anotherSiteId)).thenReturn(expectedToday);
         when(siteService.addVisitors(anotherUrl)).thenReturn(expectedTotal);
 
@@ -179,7 +168,7 @@ class VisitCounterTest {
         // given
         when(bucketCounter.getBucketForDomain(testUrl)).thenReturn(bucket);
         when(bucket.tryConsume(1)).thenReturn(true);
-        when(siteService.ensureSite(testUrl)).thenReturn(testSiteId);
+        when(siteService.findIdByUrl(testUrl)).thenReturn(testSiteId);
         when(dailyScoreService.addTodayVisitors(testSiteId)).thenReturn(1L, 2L, 3L);
         when(siteService.addVisitors(testUrl)).thenReturn(1L, 2L, 3L);
 
@@ -264,7 +253,7 @@ class VisitCounterTest {
         // given
         when(bucketCounter.getBucketForDomain(testUrl)).thenReturn(bucket);
         when(bucket.tryConsume(1)).thenReturn(false).thenReturn(true);
-        when(siteService.ensureSite(testUrl)).thenReturn(testSiteId);
+        when(siteService.findIdByUrl(testUrl)).thenReturn(testSiteId);
         when(dailyScoreService.addTodayVisitors(testSiteId)).thenReturn(1L);
         when(siteService.addVisitors(testUrl)).thenReturn(1L);
 

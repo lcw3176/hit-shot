@@ -494,18 +494,13 @@
         if (e.key === 'Enter') generateBadge();
     });
 
-    async function generateBadge() {
+    function generateBadge() {
         const url = document.getElementById('siteUrl').value.trim();
         if (!url) return;
 
         const color = encodeURIComponent(colorInput.value);
         const pathValue = document.getElementById('pathInput').value.trim();
         const pathParam = pathValue ? '&path=' + encodeURIComponent(pathValue) : '';
-        const registration = await fetch('/api/badge/register?url=' + encodeURIComponent(url) + pathParam, { method: 'POST' });
-        if (!registration.ok) {
-            alert('주소를 등록하지 못했습니다. URL을 확인한 뒤 다시 시도해 주세요.');
-            return;
-        }
         const previewUrl = '/api/badge/view/total-count?url=' + encodeURIComponent(url) + '&color=' + color + pathParam;
         const fullImageUrl = 'https://hit.kmapshot.com/api/badge/svg?url=' + encodeURIComponent(url) + '&color=' + color + pathParam;
         const linkUrl = 'https://hit.kmapshot.com';

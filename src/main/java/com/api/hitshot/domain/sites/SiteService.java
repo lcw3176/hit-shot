@@ -5,7 +5,6 @@ import com.api.hitshot.infra.exception.status.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
-import org.springframework.dao.DuplicateKeyException;
 
 @Service
 @RequiredArgsConstructor
@@ -26,16 +25,6 @@ public class SiteService {
                 .orElseThrow(() -> new ApiException(ErrorCode.SITE_URL_NOT_FOUND));
 
         return site.getId();
-    }
-
-    public ObjectId ensureSite(String url) {
-        return siteRepository.findByUrl(url).map(SiteEntity::getId).orElseGet(() -> {
-            try {
-                return siteRepository.save(SiteEntity.builder().url(url).visitors(0L).build()).getId();
-            } catch (DuplicateKeyException concurrentRegistration) {
-                return findIdByUrl(url);
-            }
-        });
     }
 
 

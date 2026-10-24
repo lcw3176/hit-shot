@@ -23,10 +23,6 @@ public class VisitCounter {
     private final BucketCounter bucketCounter;
     private final DailyScoreService dailyScoreService;
 
-    public void registerSite(String url) {
-        siteService.ensureSite(url);
-    }
-
     @Transactional(readOnly = true)
     public SiteVisitor onlyGetTotalVisitorsCount(String url) {
         ObjectId siteId = siteService.findIdByUrl(url);
@@ -44,8 +40,7 @@ public class VisitCounter {
         Bucket bucket = bucketCounter.getBucketForDomain(url);
 
         if (bucket.tryConsume(1)) {
-            // New badge URLs must be registered before the daily score is updated.
-            ObjectId siteId = siteService.ensureSite(url);
+            ObjectId siteId = siteService.findIdByUrl(url);
             long today = dailyScoreService.addTodayVisitors(siteId);
             long total = siteService.addVisitors(url);
 
